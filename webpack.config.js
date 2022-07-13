@@ -4,73 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
-const imgRules = {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',   
-}
-/*const rulesJS = {
-    test: /\.m?js$/,
-    exclude: /node_modules/,
-    use: {
-      loader: "babel-loader",
-      options: {
-        presets: ['@babel/preset-env']
-      }
-    }
-}*/
-
-/*const sassLoader = {
-  test: /\.s[ac]ss$/i,
-        use: [
-          "style-loader",
-          "css-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              // Prefer `dart-sass`
-              implementation: require("sass"),
-            },
-          },
-        ]
-}*/
-
-/*const styleLoader = {
-    test: /.(css|sass|scss)$/,
-    exclude: /styles\.css$/,
-    use: ['style-loader', 'css-loader', 'sass-loader']
-    }*/
-
-/*const styleExtract = {
-  test: /\.(sa|sc|c)ss$/,
-  use: [
-    isProduction ? "style-loader" : MiniCssExtractPlugin.loader,
-    "css-loader",
-    "sass-loader",
-  ],
-}*/
-
-/*const imgLoader = {
-    test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            esModule: false,
-                            name: 'assets/[name].[ext]'
-                        }
-                    }
-                ]
-}*/
-
-/*const rules = [
-    rulesJS,
-    styleLoader,
-    //sassLoader,
-    //styleExtract,
-    imgRules,
-    imgLoader
-]*/
-
 module.exports = (env, argv) => {
     const {mode} = argv;
     const isProduction = mode == 'production';
@@ -95,17 +28,10 @@ module.exports = (env, argv) => {
               }
           },
           {
-            test: /.(css|sass|scss)$/,
-            exclude: /styles\.css$/,
-            use: ['style-loader', 'css-loader', 'sass-loader']
-          },
-          {
             test: /\.(sa|sc|c)ss$/,
-            use: [
-              isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-              "css-loader",
-              "sass-loader",
-            ],
+            exclude: /styles\.css$/,
+            use: [isProduction ? MiniCssExtractPlugin.loader :
+                                 'style-loader', 'css-loader', 'sass-loader']
           },
           {
             test: /\.(png|svg|jpg|gif)$/,
@@ -118,7 +44,7 @@ module.exports = (env, argv) => {
                                 }
                             }
                         ]
-        }
+                }
           ]
           
         },
@@ -139,7 +65,8 @@ module.exports = (env, argv) => {
           }),
         ],
         devServer: {
-          open:true
+          open:true,
+          static: ['src']
         },
         optimization: {
             minimize: isProduction ? true 
